@@ -1,20 +1,9 @@
 build {
-  name = "iac-builders-ami"
-  source "source.amazon-ebs.ami" {
-    force_deregister      = var.enabled_force_deregister
-    force_delete_snapshot = var.enabled_force_delete_snapshot
+  source = ["source.amazon-ebs.ami"]
 
-    ami_name        = var.image_name
-    ami_description = var.image_description
-
-    iam_instance_profile = var.iam_instance_profile
-
-    source_ami_filter {
-      virtualization_type = "hvm"
-      name                = "ubuntu/images/*ubuntu-*-${var.os_version}-amd64-server-*"
-      root_device_type    = "ebs"
-    }
-    max_retries = 5
+  provisioner "ansible" {
+    playbook_file    = "../../ansible/${var.node_label}-${replace(var.os_version, ".", "")}-playbook.yml"
+    extra_arguments  = ["-v", ""]
+    ansible_env_vars = ["ANSIBLE_STDOUT_CALLBACK=debug", "ANSIBLE_COLOR=True"]
   }
-  
 }

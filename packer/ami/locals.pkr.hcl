@@ -14,9 +14,9 @@ locals {
   }, var.additional_tags)
 
   lifetime = {
-    "dev"     = var.lifetime_tag ? "" : "relative-days-7"
-    "staging" = var.lifetime_tag ? "" : "relative-months-1"
-    "prod"    = var.lifetime_tag ? "" : "relative-months-3"
+    "dev"     = var.lifetime_tag != "" ? var.lifetime_tag : "relative-days-7"
+    "staging" = var.lifetime_tag != "" ? var.lifetime_tag : "relative-months-1"
+    "prod"    = var.lifetime_tag != "" ? var.lifetime_tag : "relative-months-3"
   }
 
   shared_accounts = {
